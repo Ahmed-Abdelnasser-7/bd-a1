@@ -1,0 +1,21 @@
+LOGISTIC REGRESSION MODEL EVALUATION
+====================================
+
+Accuracy:  0.9603
+Precision: 0.9500
+Recall:    0.7252
+F1-Score:  0.8225
+
+CONFUSION MATRIX
+----------------
+True Negatives (Ham correctly identified): 898
+False Positives (Ham classified as Spam): 5
+False Negatives (Spam classified as Ham): 36
+True Positives (Spam correctly identified): 95
+
+INTERPRETATION
+--------------
+The model achieved 96.03% accuracy.
+It achieved high precision, meaning most messages predicted as spam were actually spam.
+Recall was lower, meaning some actual spam messages were missed.
+The model correctly identified 95 spam messages but missed 36.

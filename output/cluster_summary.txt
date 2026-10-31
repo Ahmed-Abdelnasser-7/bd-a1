@@ -1,0 +1,39 @@
+K-MEANS CLUSTERING REPORT
+========================
+
+FINAL MODEL CONFIGURATION
+-------------------------
+Algorithm: K-Means
+Number of clusters: 2
+TF-IDF maximum features: 5000
+Stop words: English
+Dimensionality reduction: TruncatedSVD
+SVD components: 50
+Explained variance: 0.1680
+Silhouette score: 0.2349
+
+CLUSTER SIZES
+-------------
+cluster
+0    4969
+1     200
+
+CLUSTER VS ACTUAL LABELS
+-----------------------
+label           ham  spam
+final_cluster            
+0              4316   653
+1               200     0
+
+EXPERIMENT COMPARISON
+--------------------
+Original TF-IDF: 0.0040
+SVD 100 components: 0.1432
+SVD 50 components: 0.2349
+SVD 200 components: 0.0690
+
+INTERPRETATION
+--------------
+The 50-component model achieved the highest silhouette score among the tested configurations.
+However, Cluster 0 contained 4316 ham and 653 spam messages, while Cluster 1 contained 200 ham and zero spam messages.
+Therefore, the improved clustering achieved better geometric separation but did not successfully separate spam from ham.
