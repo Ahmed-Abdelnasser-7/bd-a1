@@ -10,38 +10,30 @@
 | 1 | [Ahmed Abdelnasser] | [231000202] |
 | 2 | [Mohamed Ayman] | [231002084] |
 | 3 | [Hazem Hesham] | [231001223] |
-## 2. Project Overview
 
-This project analyzes SMS messages to identify patterns in text data and classify messages as **Spam** or **Ham** (legitimate messages).
+## Project Overview
+This project analyzes the SMS Spam Collection dataset to explore message characteristics, perform text analysis, and build machine learning models to classify SMS messages as spam or ham.
 
-The project covers data exploration, cleaning, transformation, sampling, text analysis, visualization, supervised machine learning, and unsupervised clustering. All analysis and modeling are performed inside a Docker container using JupyterLab.
+## Dataset
+The dataset contains SMS messages labeled as:
+- **Ham:** Legitimate messages.
+- **Spam:** Unwanted or promotional messages.
 
-## 3. Dataset
-
-The project uses the **SMS Spam Collection Dataset**, containing 5,169 messages:
-
-- 4,516 Ham messages.
-- 653 Spam messages.
-
-The dataset contains two original columns: `label` and `message`.
-
-## 4. Technologies Used
-
+## Technologies Used
 - Python
-- Docker and JupyterLab
 - Pandas and NumPy
 - Matplotlib and Seaborn
 - Scikit-learn
+- Docker
+- Jupyter Notebook
 
-## 5. Project Structure
+## Project Structure
 
 ```text
 bd-a1/
-├── Dockerfile
-├── requirements.txt
-├── README.md
 ├── data/
-│   └── dataset.csv
+│   ├── dataset.csv
+│   └── SMSSpamCollection
 ├── notebook/
 │   └── analysis.ipynb
 ├── output/
@@ -49,94 +41,176 @@ bd-a1/
 │   ├── model_metrics.txt
 │   ├── cluster_summary.txt
 │   └── figures/
-└── screenshots/
+├── screenshots/
+├── convert_csv.py
+├── Dockerfile
+├── requirements.txt
+└── README.md
 ```
 
-## 6. Analysis and Machine Learning
+## Analysis and Implementation
 
 The project includes:
 
-- **Data Exploration and Cleaning:** Examining dataset structure, missing values, duplicates, and data types.
-- **Data Transformation:** Creating additional numerical features and applying random, stratified, and cluster sampling.
-- **Text Analysis:** Text cleaning, tokenization, word-frequency analysis, stop-word removal, and comparison of spam and ham messages.
-- **Feature Analysis:** Extracting numerical features and visualizing their correlations.
-- **Classification:** Using TF-IDF and Logistic Regression to classify SMS messages.
-- **Clustering:** Applying K-Means with TF-IDF and TruncatedSVD to explore message groupings.
+1. **Data Exploration and Cleaning:** Examining the dataset, identifying missing values and duplicates, and preparing the data.
+2. **Data Transformation and Sampling:** Applying transformations and demonstrating random, stratified, and cluster sampling.
+3. **Text Analysis:** Cleaning and tokenizing messages, analyzing word frequencies, and comparing spam and ham messages.
+4. **Feature Analysis:** Extracting numerical features and examining their correlations.
+5. **Supervised Machine Learning:** Using TF-IDF and Logistic Regression to classify messages.
+6. **Unsupervised Machine Learning:** Applying K-Means clustering using TF-IDF and dimensionality reduction with TruncatedSVD.
 
-### Classification Results
+## Classification Results
 
-| Metric | Result |
+The Logistic Regression model achieved:
+
+| Metric | Score |
 |---|---:|
-| Accuracy | 96.03% |
-| Precision (Spam) | 95.00% |
-| Recall (Spam) | 72.52% |
-| F1-Score (Spam) | 82.25% |
+| Accuracy | 0.9603 |
+| Precision | 0.9500 |
+| Recall | 0.7252 |
+| F1-score | 0.8225 |
 
-### Clustering Results
+## Docker Setup and Execution
 
-The final K-Means experiment used 50 SVD components and 2 clusters, achieving a silhouette score of **0.2349**.
+### 1. Build the Docker Image
 
-## 7. Output Files
+From the project root directory:
 
-The `output/` directory contains:
-
-- `cleaned_data.csv` – Processed dataset and extracted features.
-- `model_metrics.txt` – Classification evaluation results.
-- `cluster_summary.txt` – Clustering configuration and results.
-- `figures/` – Generated visualizations, including the correlation heatmap, word-frequency charts, group comparisons, and confusion matrix.
-
-## 8. Docker Setup and Execution
-
-**Requirement:** Docker Desktop must be installed and running.
-
-Open PowerShell in the project directory:
-
-### Build the Docker image
-
-```powershell
+```bash
 docker build -t bd-a1 .
 ```
 
-### First-time execution (create a new container)
+### 2. Run the Container
 
-```powershell
+```bash
 docker run -d --name bd-a1-container -p 8888:8888 bd-a1:latest
 ```
 
-### Run an existing container
-
-If the container has already been created and stopped, start it again using:
-
-```powershell
-docker start bd-a1-container
-```
-
-### Access JupyterLab
-
-Open the following address in your browser:
+Open JupyterLab in your browser:
 
 ```text
 http://localhost:8888
 ```
 
-Open `notebook/analysis.ipynb` and select:
+### 3. Check Running Containers
 
-**Kernel → Restart Kernel and Run All Cells**
+```bash
+docker ps
+```
 
-This runs the complete analysis and machine learning workflow.
+To show all containers, including stopped ones:
 
-### Useful Docker Commands
+```bash
+docker ps -a
+```
 
-| Purpose | Command |
-|---|---|
-| Check running containers | `docker ps` |
-| Check all containers | `docker ps -a` |
-| Stop the container | `docker stop bd-a1-container` |
-| View container logs | `docker logs bd-a1-container` |
-| Remove the container | `docker rm -f bd-a1-container` |
+### 4. Check Container Logs
 
-## 9. Reproducibility
+```bash
+docker logs bd-a1-container
+```
 
-To reproduce the project, obtain the project files, ensure Docker Desktop is running, build the image, create the container, and execute all notebook cells.
+### 5. Check Files Inside the Docker Image
 
-The Dockerfile installs the required dependencies listed in `requirements.txt`, while the notebook performs the complete analysis and generates the project outputs.
+To inspect the project files included in the image:
+
+```bash
+docker run --rm bd-a1:latest ls -R /home/jovyan/work
+```
+
+To open a terminal inside the running container:
+
+```bash
+docker exec -it bd-a1-container bash
+```
+
+Then navigate and inspect the project:
+
+```bash
+cd /home/jovyan/work
+ls -R
+```
+
+### 6. Stop or Remove the Container
+
+Stop the container:
+
+```bash
+docker stop bd-a1-container
+```
+
+Remove the container:
+
+```bash
+docker rm bd-a1-container
+```
+
+## Docker Hub
+
+The Docker image is published on Docker Hub under:
+
+**Repository:** `ahmedabdelnasser7/bd-a1`
+
+[View Docker Hub Repository](https://hub.docker.com/r/ahmedabdelnasser7/bd-a1)
+
+### 1. Log in to Docker Hub
+
+```bash
+docker login
+```
+
+### 2. Tag the Image
+
+```bash
+docker tag bd-a1:latest ahmedabdelnasser7/bd-a1:latest
+```
+
+### 3. Push the Image to Docker Hub
+
+```bash
+docker push ahmedabdelnasser7/bd-a1:latest
+```
+
+### 4. Verify the Published Image
+
+```bash
+docker manifest inspect ahmedabdelnasser7/bd-a1:latest
+```
+
+You can also visit the Docker Hub repository and check the **Tags** section for the `latest` image.
+
+### 5. Pull the Image on Another Machine
+
+A teammate can download the published image using:
+
+```bash
+docker pull ahmedabdelnasser7/bd-a1:latest
+```
+
+Then run it using:
+
+```bash
+docker run -d --name bd-a1-container -p 8888:8888 ahmedabdelnasser7/bd-a1:latest
+```
+
+Open:
+
+```text
+http://localhost:8888
+```
+
+## Important Note About Output Files
+
+The current Docker run command does not use volume mounts. Therefore, files generated or modified inside the container are stored inside the container and do not automatically appear in the Windows project folder.
+
+## Output Files
+
+The project generates:
+- `cleaned_data.csv`
+- `model_metrics.txt`
+- `cluster_summary.txt`
+- Figures inside `output/figures/`
+
+## Reproducibility
+
+The project can be reproduced by building the Docker image, running the container, and executing the Jupyter notebook from the provided environment.
